@@ -4,3 +4,4 @@ Code database for extracting and visualizing Stage 2 data sourced from RedCap or
 
 ## TabulateWavelets.py
 Code that extract and tabulates wavelets calculated from RNS-acquired recordings.
+v1.0
