@@ -1,4 +1,5 @@
 """ Custom functions to extract data in hdf5 file containing Stage 2 data
+    version v2.0
 """
 
 # Standard Libraries #
@@ -6,8 +7,34 @@ import pandas as pd
 import numpy as np
 import datetime
 from datetime import timedelta
+import pathlib
 
 #Custom functions #
+
+##Retrieve neuropace catalog from server based on patient id
+def GetNeuropaceCatalog(Patient_ID):
+    main_dir = '/data_store0/presidio/NeuroPace_BOX'
+    if Patient_ID == 'PR01':
+        pt_dir, filename  = 'UCSF_SS_7630771 EXTERNAL #PHI', 'UCSF_SS_7630771_ECoG_Catalog.csv'
+        catalog = pd.read_csv(pathlib.Path(main_dir, pt_dir, filename))
+
+    if Patient_ID == 'PR03':
+        pt_dir, filename  = 'UCSF_MW_9099697 EXTERNAL #PHI', 'UCSF_MW_9099697_ECoG_Catalog.csv'
+        catalog = pd.read_csv(pathlib.Path(main_dir, pt_dir, filename))
+
+    if Patient_ID == 'PR04':
+        pt_dir, filename  = 'UCSF_EG_9769081 EXTERNAL #PHI', 'UCSF_EG_9769081_ECoG_Catalog.csv'
+        catalog = pd.read_csv(pathlib.Path(main_dir, pt_dir, filename))
+
+    if Patient_ID == 'PR05':
+        pt_dir, filename  = 'UCSF_VH_12419759 EXTERNAL #PHI', 'UCSF_VH_12419759_ECoG_Catalog.csv'
+        catalog = pd.read_csv(pathlib.Path(main_dir, pt_dir, filename))
+
+    if Patient_ID == 'PR06':
+        pt_dir, filename  = 'UCSF_RL_13091209 EXTERNAL #PHI', 'UCSF_RL_13091209_ECoG_Catalog.csv'
+        catalog = pd.read_csv(pathlib.Path(main_dir, pt_dir, filename))
+
+    return catalog
 
 ##Get channel labels, decoding bytes to str
 def GetChannelAxis(File):
@@ -63,3 +90,5 @@ def format_time(Timestamps):
     for i in Timestamps:
         NewTimestamps.append(i.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
     return NewTimestamps
+
+"""End of code"""
