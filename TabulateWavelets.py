@@ -23,7 +23,7 @@ magnet_on    = True
 scheduled_on = False
 realtime_on  = False
 
-start, stop = '2024-09-01', '2024-11-12'
+start, stop = '2024-09-05', '2024-09-07'
 
 # Clean up and extract relevant columns from rns catalog # 
 # Do not modify
