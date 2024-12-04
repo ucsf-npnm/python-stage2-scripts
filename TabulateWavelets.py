@@ -1,4 +1,5 @@
 """ Extract data in hdf5 file containing Stage 2 data
+    version v2.0
 """
 
 # Standard Libraries #
@@ -10,14 +11,14 @@ import pathlib
 import h5py
 
 # Custom functions #
-from Tools import GetChannelAxis, GetPeakFrequencies, GetWaveletsArray, GetTimeAxis, TabulateWavelets, GetArtifactTags, format_time
+from Tools import GetNeuropaceCatalog, GetChannelAxis, GetPeakFrequencies, GetWaveletsArray, GetTimeAxis, TabulateWavelets, GetArtifactTags, format_time
 
 # User-specified inputs #
 patient_id = 'PR05'
 input_dir = f'/userdata/dastudillo/patient_data/stage2/{patient_id}' #surveys csv (from redcap) and rns catalog (from box) should be located in the same directory 
 output_dir = f'/userdata/dastudillo/patient_data/stage2/{patient_id}'
 surveys_raw = pd.read_csv(pathlib.Path(input_dir, f'{patient_id}_Stage2Surveys.csv'))
-rns_raw = pd.read_csv(pathlib.Path(input_dir, f'{patient_id}_RNSCatalog.csv'))
+rns_raw = GetNeuropaceCatalog(patient_id)
 
 magnet_on    = True
 scheduled_on = False
@@ -103,3 +104,6 @@ for i in range(len(files)):
     allfiles_df = pd.concat([allfiles_df, file_df], ignore_index=True)
 
 allfiles_df.to_csv(pathlib.Path(output_dir, f'{patient_id}_Stage2_wavelets_{start}_{stop}.csv'), index=False)
+PREPROC_DATA.close() #close hdf5 file
+
+"""End of code"""
