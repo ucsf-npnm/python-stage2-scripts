@@ -65,6 +65,9 @@ rns_filter = rns_clean.loc[mask].reset_index(drop=True)
 # Get list of file names and start timestamps of recordings
 files       = rns_filter.Filename
 files_start = rns_filter.Start_Timestamp_Local
+files_triggertype = rns_filter.TriggerType
+files_triggertimestamp = rns_filter.Trigger_Timestamp_Local
+
 print('Number of files: ', len(files))
 
 #Use custom functions to get wavelets tabulated
@@ -94,8 +97,15 @@ for i in range(len(files)):
 
     file_df = all_wavelets.merge(artifact_tags, how='inner', left_on='Timestamp', right_on='ArtifactTimestamp')
     file_df['Filename'] = files[i]
-    col1 = file_df.pop('Filename')
-    file_df.insert(0, 'Filename', col1)
+    file_df['TriggerType'] = files_triggertype[i]
+    file_df['TriggerLocalTimestamp'] = files_triggertimestamp[i]
+
+    col0 = file_df.pop('Filename')
+    col1 = file_df.pop('TriggerType')
+    col2 = file_df.pop('TriggerLocalTimestamp')
+    file_df.insert(0, 'Filename', col0)
+    file_df.insert(1, 'TriggerType', col1)
+    file_df.insert(2, 'TriggerLocalTimestamp', col2)
     
     del artifact_tags
     print(f'Adding file {i+1} to final dataframe')
@@ -104,6 +114,7 @@ for i in range(len(files)):
     allfiles_df = pd.concat([allfiles_df, file_df], ignore_index=True)
 
 allfiles_df.to_csv(pathlib.Path(output_dir, f'{patient_id}_Stage2_wavelets_{start}_{stop}.csv'), index=False)
+del allfiles_df
 PREPROC_DATA.close() #close hdf5 file
 
 """End of code"""
