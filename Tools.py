@@ -69,11 +69,11 @@ def TabulateWavelets(Channel, Array, Index, Columns):
     return NewDataFrame
 
 #Get artifacts array
-def GetArtifactTags(File, FileStart):
+def GetArtifactTags(File, FileStart, Period, ArtifactVersion):
     #fs = File['detectors']['stimartifact_v2'].attrs['fs'] #sampling FREQUENCY (Hz)
-    period = 1/250
-    factor_ls = list(range(np.array(File['detectors']['stimartifact_v2']).shape[0]))
-    timedelta_ls = [x*period for x in factor_ls]
+    #period = 1/250
+    factor_ls = list(range(np.array(File['detectors'][f'{ArtifactVersion}']).shape[0]))
+    timedelta_ls = [x*Period for x in factor_ls]
 
     time_axis = []
     for seconds in timedelta_ls:
@@ -81,7 +81,7 @@ def GetArtifactTags(File, FileStart):
 
     NewDataFrame = pd.DataFrame(data=None, index=factor_ls)
     NewDataFrame['ArtifactTimestamp'] = time_axis
-    NewDataFrame['ArtifactTag'] = np.array(File['detectors']['stimartifact_v2'])
+    NewDataFrame['ArtifactTag'] = np.array(File['detectors'][f'{ArtifactVersion}'])
                                            
     return NewDataFrame
 
