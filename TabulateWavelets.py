@@ -15,16 +15,19 @@ from Tools import GetNeuropaceCatalog, GetChannelAxis, GetPeakFrequencies, GetWa
 
 # User-specified inputs #
 patient_id = 'PR05'
-input_dir = f'/userdata/dastudillo/patient_data/stage2/{patient_id}' #surveys csv (from redcap) and rns catalog (from box) should be located in the same directory 
+input_dir = f'/userdata/dastudillo/patient_data/stage2/{patient_id}' #surveys csv from redcap should be located in this directory 
 output_dir = f'/userdata/dastudillo/patient_data/stage2/{patient_id}'
 surveys_raw = pd.read_csv(pathlib.Path(input_dir, f'{patient_id}_Stage2Surveys.csv'))
-rns_raw = GetNeuropaceCatalog(patient_id)
+rns_raw = GetNeuropaceCatalog(patient_id) #retrieve ecog catalog based on defined patient_id
 
 magnet_on    = True
 scheduled_on = False
 realtime_on  = False
 
 start, stop = '2024-09-01', '2024-11-12'
+
+period = 1/250 #250 Hz is sampling frequency set on RNS devices
+artifact_version = 'stimartifact_v2' #change according to artifact dataset name within hdf5 you want to use
 
 # Clean up and extract relevant columns from rns catalog # 
 # Do not modify
@@ -83,7 +86,7 @@ for i in range(len(files)):
     n_samples = wavelets.shape[2]
     time_axis = GetTimeAxis(PREPROC_DATA[files[i]], n_samples, files_start[i])
 
-    artifact_tags = GetArtifactTags(PREPROC_DATA[files[i]], files_start[i])
+    artifact_tags = GetArtifactTags(PREPROC_DATA[files[i]], files_start[i], period, artifact_version)
     artifact_tags['ArtifactTimestamp'] = pd.to_datetime(pd.Series(format_time(artifact_tags.ArtifactTimestamp)))
 
     wavelets_ch1 = TabulateWavelets(channels[0], wavelets[0], peak_freqs, time_axis)
