@@ -9,7 +9,7 @@ import pathlib
 
 # User-specified inputs #
 patient_id = 'PR05'
-api_key = 'DA5ADBED98FAA9D91D257FFD9E5B2E6D' #API token assigned to unique user AND project by REDCap administrator (to request: log in with credentials on REDCap, go to a project, click API under Applications)
+api_key = 'AlphanumericKeyThatOnlyYouShouldHave' #API token assigned to unique user AND project by REDCap administrator (to request: log in with credentials on REDCap, go to a project, click API under Applications)
 out_dir = f'/userdata/dastudillo/patient_data/'
 
 # Main code #
